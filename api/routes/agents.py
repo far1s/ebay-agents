@@ -26,8 +26,14 @@ class RunRequest(BaseModel):
 
 def _run_crew(run_id: str | None = None):
     global _active_run_id
-    from crew.main_crew import EbayAgentsCrew
-
+    try:
+        from crew.main_crew import EbayAgentsCrew
+    except ImportError:
+        _active_run_id = None
+        raise RuntimeError(
+            "CrewAI is not installed in this environment. "
+            "Run the pipeline locally: python -c \"from crew.main_crew import EbayAgentsCrew; EbayAgentsCrew().run()\""
+        )
     crew = EbayAgentsCrew()
     result = crew.run(run_id)
     _active_run_id = None

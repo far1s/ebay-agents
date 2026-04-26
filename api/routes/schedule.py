@@ -57,14 +57,20 @@ async def cron_trigger(request: Request):
     if not settings.get("enabled", True):
         return {"status": "skipped", "reason": "Schedule is disabled"}
 
-    from crew.main_crew import EbayAgentsCrew
+    try:
+        from crew.main_crew import EbayAgentsCrew
+    except ImportError:
+        return {
+            "status": "unavailable",
+            "message": "CrewAI not installed in this deployment. Trigger runs locally or on a full server.",
+        }
+
     import asyncio
     from concurrent.futures import ThreadPoolExecutor
 
     executor = ThreadPoolExecutor(max_workers=1)
     loop = asyncio.get_event_loop()
-
     crew = EbayAgentsCrew()
-    future = loop.run_in_executor(executor, crew.run)
+    loop.run_in_executor(executor, crew.run)
 
     return {"status": "started", "message": "Cron run triggered"}
