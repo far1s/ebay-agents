@@ -7,17 +7,14 @@
     },
     {
       "src": "api/main.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "50mb" }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "api/main.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "dashboard/$1"
     }
   ],
   "crons": [
@@ -25,18 +22,5 @@
       "path": "/api/schedule/run",
       "schedule": "0 9 * * *"
     }
-  ],
-  "env": {
-    "ANTHROPIC_API_KEY": "@anthropic-api-key",
-    "EBAY_APP_ID": "@ebay-app-id",
-    "EBAY_CERT_ID": "@ebay-cert-id",
-    "EBAY_DEV_ID": "@ebay-dev-id",
-    "EBAY_USER_TOKEN": "@ebay-user-token",
-    "EBAY_SANDBOX_MODE": "@ebay-sandbox-mode",
-    "TELEGRAM_BOT_TOKEN": "@telegram-bot-token",
-    "TELEGRAM_CHAT_ID": "@telegram-chat-id",
-    "SUPABASE_URL": "@supabase-url",
-    "SUPABASE_ANON_KEY": "@supabase-anon-key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase-service-role-key"
-  }
+  ]
 }
