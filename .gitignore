@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.env
+
+# Generated files
+generated_pdfs/*.pdf
+generated_pdfs/*.png
+schedule_settings.json
+
+# Next.js
+dashboard/.next/
+dashboard/node_modules/
+dashboard/.env.local
+
+# Misc
+.DS_Store
+*.log

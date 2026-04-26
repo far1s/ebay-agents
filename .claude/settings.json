@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Recurse -File \"c:\\\\Users\\\\faris\\\\ebay-agents\" | Where-Object { $_.FullName -notmatch 'node_modules|\\\\.next|\\\\.venv|__pycache__' } | Select-Object FullName | Sort-Object FullName | ForEach-Object { $_.FullName.Replace\\('c:\\\\Users\\\\faris\\\\ebay-agents\\\\', ''\\) })",
+      "PowerShell(gh --version)",
+      "PowerShell(winget --version)",
+      "PowerShell(winget install --id Git.Git -e --source winget --accept-package-agreements --accept-source-agreements)",
+      "PowerShell(winget install --id GitHub.cli -e --source winget --accept-package-agreements --accept-source-agreements)",
+      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); git --version; gh --version)",
+      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); gh auth status)",
+      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); gh auth login --hostname github.com --git-protocol https --web)"
+    ]
+  }
+}
