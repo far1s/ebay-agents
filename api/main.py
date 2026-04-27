@@ -87,6 +87,7 @@ async def health():
         "anthropic": "ok" if os.getenv("ANTHROPIC_API_KEY") else "missing key",
         "etsy": "ok" if os.getenv("ETSY_API_KEY") else "missing key",
         "etsy_shop": "ok" if os.getenv("ETSY_SHOP_ID") else "missing key",
+        "etsy_token": "ok" if os.getenv("ETSY_ACCESS_TOKEN") else "missing key",
         "telegram": "ok" if os.getenv("TELEGRAM_BOT_TOKEN") else "missing key",
         "supabase": "ok" if os.getenv("SUPABASE_URL") else "missing key",
         "supabase_key": "ok" if os.getenv("SUPABASE_SERVICE_ROLE_KEY") else "missing key",

@@ -13,7 +13,9 @@
       "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/health\")",
       "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/agents/status\")",
       "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/listings\")",
-      "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/logs\")"
+      "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/logs\")",
+      "WebFetch(domain:developers.etsy.com)",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\faris\\\\ebay-agents\\\\scripts\")"
     ]
   }
 }

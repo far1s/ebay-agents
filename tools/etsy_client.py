@@ -12,6 +12,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 ETSY_BASE = "https://openapi.etsy.com/v3"
+TOKEN_URL = "https://api.etsy.com/v3/public/oauth/token"
 
 # Etsy taxonomy IDs for digital products
 DIGITAL_TAXONOMY_IDS = {
@@ -33,15 +34,44 @@ class EtsyClient:
         self.api_key = os.environ["ETSY_API_KEY"]
         self.shop_id = os.environ["ETSY_SHOP_ID"]
         self.access_token = os.environ["ETSY_ACCESS_TOKEN"]
+        self.refresh_token = os.getenv("ETSY_REFRESH_TOKEN", "")
+        self._token_expiry: float = time.time() + 3500  # assume fresh on startup
 
     def _public_headers(self) -> dict:
         return {"x-api-key": self.api_key}
 
     def _auth_headers(self) -> dict:
+        self._ensure_fresh_token()
         return {
             "x-api-key": self.api_key,
             "Authorization": f"Bearer {self.access_token}",
         }
+
+    def _ensure_fresh_token(self) -> None:
+        """Refresh the access token proactively before it expires."""
+        if not self.refresh_token:
+            return
+        if time.time() < self._token_expiry - 60:
+            return
+        try:
+            resp = httpx.post(
+                TOKEN_URL,
+                data={
+                    "grant_type": "refresh_token",
+                    "client_id": self.api_key,
+                    "refresh_token": self.refresh_token,
+                },
+                headers={"Content-Type": "application/x-www-form-urlencoded"},
+                timeout=15,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            self.access_token = data["access_token"]
+            self.refresh_token = data.get("refresh_token", self.refresh_token)
+            self._token_expiry = time.time() + data.get("expires_in", 3600)
+            logger.info("Etsy access token refreshed (expires in %ds)", data.get("expires_in", 3600))
+        except Exception as exc:
+            logger.warning("Token refresh failed (will try with existing token): %s", exc)
 
     # ── Market Research ───────────────────────────────────────────────────────
 
