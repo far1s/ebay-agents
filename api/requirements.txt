@@ -1,10 +1,13 @@
-# Vercel serverless runtime requirements — lightweight API layer only.
-# Heavy packages (crewai, reportlab, Pillow, anthropic) are lazy-imported
-# inside agent functions and must be installed locally to run the pipeline.
+# Vercel serverless runtime — lightweight API layer only.
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 python-multipart>=0.0.9
-supabase>=2.3.0
 python-dotenv>=1.0.0
 pydantic>=2.7.0
 httpx>=0.27.0
+# Supabase client + explicit sub-deps for Python 3.12 compatibility
+supabase==2.9.1
+gotrue==2.9.1
+postgrest==0.18.0
+storage3==0.8.1
+realtime==2.1.0
