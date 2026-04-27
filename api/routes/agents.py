@@ -62,31 +62,35 @@ async def trigger_run(request: RunRequest, background_tasks: BackgroundTasks):
 @router.get("/status")
 async def get_status():
     """Get current system status and active run info."""
-    db = SupabaseClient()
-    runs = db.get_runs(limit=1)
-    latest_run = runs[0] if runs else None
+    try:
+        db = SupabaseClient()
+        runs = db.get_runs(limit=1)
+        latest_run = runs[0] if runs else None
 
-    performance = {}
-    agent_names = ["market_agent", "design_agent", "telegram_agent", "listing_agent", "boss_agent"]
-    for name in agent_names:
-        scores = db.get_performance(agent_name=name, limit=5)
-        avg = sum(s["score"] for s in scores) / len(scores) if scores else 0
-        performance[name] = {
-            "last_score": scores[0]["score"] if scores else None,
-            "avg_score": round(avg, 1),
-            "last_run": scores[0]["timestamp"] if scores else None,
-            "status": "running" if _active_run_id else "idle",
+        performance = {}
+        agent_names = ["market_agent", "design_agent", "telegram_agent", "listing_agent", "boss_agent"]
+        for name in agent_names:
+            scores = db.get_performance(agent_name=name, limit=5)
+            avg = sum(s["score"] for s in scores) / len(scores) if scores else 0
+            performance[name] = {
+                "last_score": scores[0]["score"] if scores else None,
+                "avg_score": round(avg, 1),
+                "last_run": scores[0]["timestamp"] if scores else None,
+                "status": "running" if _active_run_id else "idle",
+            }
+
+        pending_approvals = db.get_pending_approvals()
+
+        return {
+            "system_status": "running" if _active_run_id else "idle",
+            "active_run_id": _active_run_id,
+            "latest_run": latest_run,
+            "agents": performance,
+            "pending_approvals": len(pending_approvals),
         }
-
-    pending_approvals = db.get_pending_approvals()
-
-    return {
-        "system_status": "running" if _active_run_id else "idle",
-        "active_run_id": _active_run_id,
-        "latest_run": latest_run,
-        "agents": performance,
-        "pending_approvals": len(pending_approvals),
-    }
+    except Exception as exc:
+        import traceback
+        raise HTTPException(status_code=500, detail={"error": str(exc), "traceback": traceback.format_exc()})
 
 
 @router.get("/runs")
