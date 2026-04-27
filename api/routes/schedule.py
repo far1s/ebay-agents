@@ -58,7 +58,7 @@ async def cron_trigger(request: Request):
         return {"status": "skipped", "reason": "Schedule is disabled"}
 
     try:
-        from crew.main_crew import EbayAgentsCrew
+        from crew.main_crew import EtsyAgentsCrew
     except ImportError:
         return {
             "status": "unavailable",
@@ -70,7 +70,7 @@ async def cron_trigger(request: Request):
 
     executor = ThreadPoolExecutor(max_workers=1)
     loop = asyncio.get_event_loop()
-    crew = EbayAgentsCrew()
+    crew = EtsyAgentsCrew()
     loop.run_in_executor(executor, crew.run)
 
     return {"status": "started", "message": "Cron run triggered"}

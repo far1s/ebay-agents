@@ -1,5 +1,5 @@
 """
-FastAPI entry point for EbayAgents backend.
+FastAPI entry point for EtsyAgents backend.
 
 Deployed on Vercel as a Python serverless function under /api/*.
 Also runnable locally: uvicorn api.main:app --reload --port 8000
@@ -54,14 +54,14 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(na
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logging.getLogger(__name__).info("EbayAgents API starting up")
+    logging.getLogger(__name__).info("EtsyAgents API starting up")
     yield
-    logging.getLogger(__name__).info("EbayAgents API shutting down")
+    logging.getLogger(__name__).info("EtsyAgents API shutting down")
 
 
 app = FastAPI(
-    title="EbayAgents API",
-    description="Backend API for the EbayAgents automated eBay digital product sales system",
+    title="EtsyAgents API",
+    description="Backend API for the EtsyAgents automated eBay digital product sales system",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -106,4 +106,4 @@ async def health():
 
 @app.get("/")
 async def root():
-    return {"message": "EbayAgents API", "docs": "/docs"}
+    return {"message": "EtsyAgents API", "docs": "/docs"}

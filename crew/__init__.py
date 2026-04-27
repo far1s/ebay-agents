@@ -1,3 +1,3 @@
-from .main_crew import EbayAgentsCrew
+from .main_crew import EtsyAgentsCrew
 
-__all__ = ["EbayAgentsCrew"]
+__all__ = ["EtsyAgentsCrew"]

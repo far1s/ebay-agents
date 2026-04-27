@@ -23,7 +23,7 @@ except ImportError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "httpx"])
     import httpx
 
-REDIRECT_URI = "https://ebay-agents.vercel.app/api/oauth/callback"
+REDIRECT_URI = "https://etsy-agents.vercel.app/api/oauth/callback"
 SCOPES = "listings_r listings_w listings_d shops_r"
 AUTH_URL = "https://www.etsy.com/oauth/connect"
 TOKEN_URL = "https://api.etsy.com/v3/public/oauth/token"

@@ -3,8 +3,8 @@ import './globals.css'
 import Sidebar from '@/components/Sidebar'
 
 export const metadata: Metadata = {
-  title: 'EbayAgents — Dashboard',
-  description: 'Automated eBay digital product sales system',
+  title: 'EtsyAgents — Dashboard',
+  description: 'Automated Etsy digital product sales system',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

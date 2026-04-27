@@ -1,5 +1,5 @@
 """
-EbayAgentsCrew — the central CrewAI orchestration.
+EtsyAgentsCrew — the central CrewAI orchestration.
 
 Pipeline:
   1. Market Agent  → research Etsy for best-selling digital product
@@ -30,7 +30,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 
-class EbayAgentsCrew:
+class EtsyAgentsCrew:
     def __init__(self) -> None:
         self.db = SupabaseClient()
         self.llm = LLM(
@@ -49,7 +49,7 @@ class EbayAgentsCrew:
             run_id = f"run_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
         logger.info("=" * 60)
-        logger.info("Starting EbayAgentsCrew run: %s", run_id)
+        logger.info("Starting EtsyAgentsCrew run: %s", run_id)
         logger.info("=" * 60)
 
         # Create the run record in Supabase

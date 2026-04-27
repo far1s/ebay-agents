@@ -22,8 +22,8 @@ export default function Sidebar() {
         <div className="flex items-center gap-2">
           <span className="text-2xl">🤖</span>
           <div>
-            <div className="font-bold text-white text-base leading-tight">EbayAgents</div>
-            <div className="text-xs text-gray-500">Automated eBay Sales</div>
+            <div className="font-bold text-white text-base leading-tight">EtsyAgents</div>
+            <div className="text-xs text-gray-500">Automated Etsy Sales</div>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div className="px-5 py-4 border-t border-gray-800">
-        <p className="text-xs text-gray-600">EbayAgents v1.0.0</p>
+        <p className="text-xs text-gray-600">EtsyAgents v1.0.0</p>
         <p className="text-xs text-gray-600 mt-0.5">Powered by Claude AI</p>
       </div>
     </aside>
