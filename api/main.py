@@ -42,6 +42,12 @@ except Exception as exc:
     _import_errors["schedule"] = traceback.format_exc()
     schedule = None  # type: ignore
 
+try:
+    from api.routes import oauth
+except Exception as exc:
+    _import_errors["oauth"] = traceback.format_exc()
+    oauth = None  # type: ignore
+
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
@@ -76,6 +82,8 @@ if logs:
     app.include_router(logs.router, prefix="/api/logs", tags=["Logs"])
 if schedule:
     app.include_router(schedule.router, prefix="/api/schedule", tags=["Schedule"])
+if oauth:
+    app.include_router(oauth.router, prefix="/api/oauth", tags=["OAuth"])
 
 
 @app.get("/api/health")
