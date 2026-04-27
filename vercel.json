@@ -8,7 +8,15 @@
     {
       "src": "api/main.py",
       "use": "@vercel/python",
-      "config": { "maxLambdaSize": "50mb" }
+      "config": {
+        "maxLambdaSize": "50mb",
+        "includeFiles": [
+          "tools/**",
+          "agents/**",
+          "crew/**",
+          "api/**"
+        ]
+      }
     }
   ],
   "routes": [
