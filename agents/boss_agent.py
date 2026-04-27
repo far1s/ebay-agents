@@ -71,13 +71,13 @@ def create_boss_agent(llm: Any, run_id: str) -> Agent:
     return Agent(
         role="Operations Manager & Quality Controller",
         goal=(
-            "Orchestrate the full eBay digital product pipeline, monitor each agent's output, "
+            "Orchestrate the full Etsy digital product pipeline, monitor each agent's output, "
             "score their performance (1–10), write a concise run report, and save it to the database. "
             "Never let a single agent failure crash the entire pipeline."
         ),
         backstory=(
             "You are the CEO of a digital products business. You oversee a team of specialised agents: "
-            "a market researcher, a designer, a Telegram coordinator, and an eBay listing specialist. "
+            "a market researcher, a designer, a Telegram coordinator, and an Etsy listing specialist. "
             "You set high standards, give clear feedback, and ensure every run is logged and scored. "
             "You recover gracefully from errors and always provide a useful post-run summary."
         ),

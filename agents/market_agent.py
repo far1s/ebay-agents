@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class MarketResearchTool(BaseTool):
     name: str = "market_research_tool"
     description: str = (
-        "Search eBay for best-selling digital download products. "
+        "Search Etsy for best-selling digital download products. "
         "Returns top 10 opportunities ranked by opportunity score, "
         "plus the single best recommendation with a suggested listing price."
     )
@@ -31,8 +31,8 @@ class MarketResearchTool(BaseTool):
         object.__setattr__(self, "scraper", MarketScraper())
 
     def _run(self, query: str = "") -> str:
-        logger.info("[MarketAgent] Starting eBay market research...")
-        self.db.log("market_agent", "Starting eBay market research", run_id=self.run_id)
+        logger.info("[MarketAgent] Starting Etsy market research...")
+        self.db.log("market_agent", "Starting Etsy market research", run_id=self.run_id)
 
         try:
             result = self.scraper.full_research()
@@ -93,14 +93,14 @@ class MarketResearchTool(BaseTool):
 def create_market_agent(llm: Any, run_id: str) -> Agent:
     tool = MarketResearchTool(run_id=run_id)
     return Agent(
-        role="eBay Market Research Specialist",
+        role="Etsy Market Research Specialist",
         goal=(
-            "Identify the highest-opportunity digital download products on eBay "
+            "Identify the highest-opportunity digital download products on Etsy "
             "by analysing competitor listings, pricing, and sales volume. "
             "Return a clear #1 product recommendation with full reasoning."
         ),
         backstory=(
-            "You are an expert eBay market researcher with deep knowledge of the digital "
+            "You are an expert Etsy market researcher with deep knowledge of the digital "
             "downloads category. You analyse trends, competitor pricing, and demand signals "
             "to find profitable opportunities for new digital product listings."
         ),
@@ -115,8 +115,8 @@ def create_market_agent(llm: Any, run_id: str) -> Agent:
 def create_market_research_task(agent: Agent, run_id: str) -> Task:
     return Task(
         description=(
-            f"Conduct a full eBay market research run (run_id: {run_id}). "
-            "Use the market_research_tool to search eBay for best-selling digital download products. "
+            f"Conduct a full Etsy market research run (run_id: {run_id}). "
+            "Use the market_research_tool to search Etsy for best-selling digital download products. "
             "Analyse the results and identify the single best product opportunity. "
             "Consider: sales volume, average price, competition level, and profit potential. "
             "Categories to focus on: calendars, planners, trackers, wall art, notebooks."

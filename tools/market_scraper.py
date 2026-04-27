@@ -1,26 +1,24 @@
-import os
 import re
 import time
 import logging
 from collections import Counter
-from typing import Any
 
 from dotenv import load_dotenv
 
-from .ebay_client import EbayClient
+from .etsy_client import EtsyClient
 
 load_dotenv()
 logger = logging.getLogger(__name__)
 
-SEARCH_CATEGORIES = [
-    "digital download planner 2026",
+SEARCH_QUERIES = [
+    "digital planner 2026 printable",
     "printable PDF calendar 2026",
-    "digital download notebook",
-    "printable wall art",
-    "habit tracker printable",
+    "digital download notebook printable",
+    "printable wall art digital",
+    "habit tracker printable PDF",
     "budget tracker printable PDF",
-    "meal planner printable",
-    "workout log printable",
+    "meal planner printable digital",
+    "workout log printable fitness",
     "dot grid notebook printable",
     "weekly planner printable PDF",
 ]
@@ -39,27 +37,26 @@ PRODUCT_TYPE_KEYWORDS = {
 
 class MarketScraper:
     def __init__(self) -> None:
-        self.ebay = EbayClient()
+        self.etsy = EtsyClient()
 
     def research_all_categories(self) -> list[dict]:
-        """Search all predefined categories and aggregate results."""
+        """Search all predefined queries on Etsy and aggregate results."""
         all_items: list[dict] = []
-        for query in SEARCH_CATEGORIES:
-            logger.info("Searching eBay for: %s", query)
+        for query in SEARCH_QUERIES:
+            logger.info("Searching Etsy for: %s", query)
             try:
-                raw_items = self.ebay.search_listings(query, limit=30)
-                metrics = self.ebay.extract_product_metrics(raw_items)
+                raw_items = self.etsy.search_listings(query, limit=30)
+                metrics = self.etsy.extract_product_metrics(raw_items)
                 for item in metrics:
                     item["search_query"] = query
                 all_items.extend(metrics)
-                time.sleep(0.5)  # be polite to the API
+                time.sleep(0.5)
             except Exception as exc:
                 logger.warning("Search failed for '%s': %s", query, exc)
 
         return all_items
 
     def classify_product_type(self, title: str) -> str:
-        """Infer product type from listing title."""
         title_lower = title.lower()
         for product_type, keywords in PRODUCT_TYPE_KEYWORDS.items():
             if any(kw in title_lower for kw in keywords):
@@ -67,7 +64,6 @@ class MarketScraper:
         return "printable"
 
     def extract_keywords(self, titles: list[str]) -> list[str]:
-        """Extract most common meaningful keywords from a list of titles."""
         stop_words = {
             "the", "a", "an", "and", "or", "for", "to", "in", "of", "with",
             "pdf", "digital", "download", "printable", "instant", "file",
@@ -82,17 +78,17 @@ class MarketScraper:
         return [word for word, _ in counter.most_common(20)]
 
     def score_opportunity(self, items: list[dict]) -> float:
-        """Score a group of items as an opportunity (0–10 scale)."""
+        """Score an opportunity group using price and Etsy favorers as proxy for demand."""
         if not items:
             return 0.0
 
         prices = [i["price"] for i in items if i["price"] > 0]
         avg_price = sum(prices) / len(prices) if prices else 0.0
 
-        # More listings = proven demand
-        listing_count = len(items)
+        # num_favorers is Etsy's closest public proxy for popularity
+        total_favorers = sum(i.get("num_favorers", 0) for i in items)
+        avg_favorers = total_favorers / len(items) if items else 0
 
-        # Price attractiveness (sweet spot $3–$15)
         if 3 <= avg_price <= 15:
             price_score = 10.0
         elif avg_price < 3:
@@ -100,13 +96,13 @@ class MarketScraper:
         else:
             price_score = max(0, 10 - (avg_price - 15) / 5)
 
-        # Volume score — more competing listings means proven market
-        volume_score = min(10.0, listing_count / 5)
+        # Volume score — more listings + higher favorers = proven market
+        volume_score = min(10.0, len(items) / 5)
+        favorer_score = min(10.0, avg_favorers / 100)
 
-        return round((price_score * 0.6 + volume_score * 0.4), 2)
+        return round((price_score * 0.5 + volume_score * 0.3 + favorer_score * 0.2), 2)
 
     def rank_opportunities(self, all_items: list[dict]) -> list[dict]:
-        """Group items by product type, score each group, return top 10."""
         grouped: dict[str, list[dict]] = {}
         for item in all_items:
             ptype = self.classify_product_type(item["title"])
@@ -135,7 +131,6 @@ class MarketScraper:
         return opportunities[:10]
 
     def get_top_recommendation(self, opportunities: list[dict]) -> dict:
-        """Return the single best opportunity with a suggested price."""
         if not opportunities:
             return self._fallback_opportunity()
 
@@ -144,14 +139,14 @@ class MarketScraper:
         top["suggested_price"] = suggested_price
         top["recommendation_reason"] = (
             f"'{top['product_type'].replace('_', ' ').title()}' has the highest opportunity score "
-            f"({top['opportunity_score']}/10) with {top['sales_volume']} competing listings "
+            f"({top['opportunity_score']}/10) with {top['sales_volume']} listings found on Etsy "
             f"at an average price of ${top['avg_price']:.2f}. "
             f"Suggested listing price ${suggested_price:.2f} gives ~40% margin over avg competitor price."
         )
         return top
 
     def _fallback_opportunity(self) -> dict:
-        """If eBay is unavailable (sandbox/no data), return a safe default."""
+        """Return a safe default if the Etsy API returns no results."""
         return {
             "product_type": "calendar",
             "keywords": ["2026 calendar", "monthly planner", "printable", "wall calendar", "digital download"],
@@ -162,18 +157,17 @@ class MarketScraper:
             "sample_titles": ["2026 Monthly Calendar Printable PDF", "Printable Wall Calendar 2026"],
             "raw_items": [],
             "recommendation_reason": (
-                "2026 calendars are consistently in demand at year-start and have low competition "
-                "for quality designs. Suggested price $4.99 is competitive and profitable."
+                "2026 calendars are consistently in demand and have strong Etsy search volume. "
+                "Suggested price $4.99 is competitive and profitable."
             ),
         }
 
     def full_research(self) -> dict:
-        """Complete market research pipeline. Returns structured result."""
-        logger.info("Starting full market research...")
+        logger.info("Starting full Etsy market research...")
         all_items = self.research_all_categories()
 
         if not all_items:
-            logger.warning("No items found from eBay (sandbox mode?). Using fallback data.")
+            logger.warning("No items found from Etsy API. Using fallback data.")
             top = self._fallback_opportunity()
             return {
                 "opportunities": [top],
@@ -185,7 +179,7 @@ class MarketScraper:
         top = self.get_top_recommendation(opportunities)
 
         logger.info(
-            "Market research complete. Top pick: %s (score %.1f)",
+            "Etsy market research complete. Top pick: %s (score %.1f)",
             top["product_type"],
             top["opportunity_score"],
         )

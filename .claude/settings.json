@@ -8,7 +8,12 @@
       "PowerShell(winget install --id GitHub.cli -e --source winget --accept-package-agreements --accept-source-agreements)",
       "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); git --version; gh --version)",
       "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); gh auth status)",
-      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); gh auth login --hostname github.com --git-protocol https --web)"
+      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); gh auth login --hostname github.com --git-protocol https --web)",
+      "PowerShell(winget install --id OpenJS.NodeJS.LTS -e --source winget --accept-package-agreements --accept-source-agreements)",
+      "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/health\")",
+      "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/agents/status\")",
+      "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/listings\")",
+      "PowerShell(Invoke-RestMethod \"https://ebay-agents.vercel.app/api/logs\")"
     ]
   }
 }

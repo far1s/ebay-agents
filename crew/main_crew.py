@@ -2,10 +2,10 @@
 EbayAgentsCrew — the central CrewAI orchestration.
 
 Pipeline:
-  1. Market Agent  → research eBay for best-selling digital product
+  1. Market Agent  → research Etsy for best-selling digital product
   2. Design Agent  → generate 3 PDF variations, pick the best
   3. Telegram Agent → send approval request; wait for owner response
-  4. Listing Agent → create live eBay listing (only if approved)
+  4. Listing Agent → create live Etsy listing (only if approved)
   5. Boss Agent    → score all agents, save final report
 
 The Boss Agent runs as a hierarchical manager who can reassign

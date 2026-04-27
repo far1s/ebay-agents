@@ -116,7 +116,7 @@ def _build_title(product_type: str, keywords: list[str]) -> str:
         "notebook": "Lined Notebook Printable PDF 100 Pages Instant Download",
     }
     base = base_titles.get(product_type, "Digital Download Printable PDF")
-    # Trim to eBay's 80-char limit
+    # Trim to Etsy's 80-char limit
     if len(base) > 80:
         base = base[:77] + "..."
     return base
@@ -133,7 +133,7 @@ def create_design_agent(llm: Any, run_id: str) -> Agent:
         ),
         backstory=(
             "You are a professional graphic designer specialising in printable digital products. "
-            "You understand what makes a product look polished, sell well, and stand out on eBay. "
+            "You understand what makes a product look polished, sell well, and stand out on Etsy. "
             "You create clean, functional designs that customers love."
         ),
         tools=[tool],
@@ -155,7 +155,7 @@ def create_design_task(agent: Agent, run_id: str, context: list | None = None) -
             "If the design score is below 7, retry with a different product_type from the alternatives list."
         ),
         expected_output=(
-            "A JSON object with: product_id (Supabase UUID), product_title (eBay-ready title, max 80 chars), "
+            "A JSON object with: product_id (Supabase UUID), product_title (Etsy-ready title, max 80 chars), "
             "product_type, design_score (1-10), pdf_path (local file path), "
             "preview_path (PNG thumbnail path), and keywords list."
         ),

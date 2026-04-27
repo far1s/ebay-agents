@@ -1,5 +1,5 @@
 """
-/api/listings — eBay listing data.
+/api/listings — Etsy listing data.
 """
 from typing import Annotated
 
@@ -15,7 +15,7 @@ async def get_listings(
     status: Annotated[str | None, Query(description="Filter by status: active, sold, ended")] = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
 ):
-    """Return all eBay listings with optional status filter."""
+    """Return all Etsy listings with optional status filter."""
     db = SupabaseClient()
     listings = db.get_listings(status=status, limit=limit)
 

@@ -42,7 +42,7 @@ class TelegramApprovalTool(BaseTool):
         product_type = params.get("product_type", "printable")
         preview_path = params.get("preview_path", "")
         suggested_price = float(params.get("suggested_price", 4.99))
-        market_reasoning = params.get("market_reasoning", "High opportunity score based on eBay market research.")
+        market_reasoning = params.get("market_reasoning", "High opportunity score based on Etsy market research.")
 
         logger.info("[TelegramAgent] Sending approval request for '%s'", product_title)
         self.db.log(
@@ -120,12 +120,12 @@ def create_telegram_agent(llm: Any, run_id: str) -> Agent:
     return Agent(
         role="Telegram Notification & Approval Manager",
         goal=(
-            "Get owner approval before any product is listed on eBay. "
+            "Get owner approval before any product is listed on Etsy. "
             "Send a clear, informative approval request via Telegram and accurately "
             "capture the owner's decision (approve, custom price, or reject)."
         ),
         backstory=(
-            "You are the gatekeeper between the automated pipeline and live eBay listings. "
+            "You are the gatekeeper between the automated pipeline and live Etsy listings. "
             "You ensure the business owner has full control and visibility over every product "
             "before it goes live. You communicate clearly and professionally."
         ),

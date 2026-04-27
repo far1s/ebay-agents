@@ -100,7 +100,7 @@ class TelegramClient:
             f"<b>📊 Why this product?</b>\n{market_summary}\n\n"
             f"<b>💰 Suggested Price:</b> <b>${suggested_price:.2f}</b>\n"
             f"  (Based on competitor analysis + 40% margin)\n\n"
-            f"Approve to list immediately on eBay, or set a custom price."
+            f"Approve to list immediately on Etsy, or set a custom price."
         )
         reply_markup = {
             "inline_keyboard": [
@@ -161,7 +161,7 @@ class TelegramClient:
 
                     if f"approve:{run_id}" in data:
                         price = float(data.split(":")[2])
-                        self.send_message(f"✅ <b>Approved!</b> Listing at <b>${price:.2f}</b>\nCreating eBay listing now...")
+                        self.send_message(f"✅ <b>Approved!</b> Listing at <b>${price:.2f}</b>\nCreating Etsy listing now...")
                         return {"status": "approved", "price": price}
 
                     if f"reject:{run_id}" in data:
@@ -182,7 +182,7 @@ class TelegramClient:
                         try:
                             price = float(text.replace("$", "").replace(",", ""))
                             self.send_message(
-                                f"✅ <b>Custom price set to ${price:.2f}</b>\nCreating eBay listing now..."
+                                f"✅ <b>Custom price set to ${price:.2f}</b>\nCreating Etsy listing now..."
                             )
                             return {"status": "custom_price", "price": price}
                         except ValueError:
@@ -196,12 +196,12 @@ class TelegramClient:
         )
         return {"status": "timeout", "price": 0.0}
 
-    def send_listing_confirmation(self, title: str, price: float, ebay_url: str) -> None:
+    def send_listing_confirmation(self, title: str, price: float, etsy_url: str) -> None:
         msg = (
-            f"🎉 <b>Listed on eBay!</b>\n\n"
+            f"🎉 <b>Listed on Etsy!</b>\n\n"
             f"<b>Title:</b> {title}\n"
             f"<b>Price:</b> ${price:.2f}\n"
-            f"<b>Link:</b> <a href='{ebay_url}'>{ebay_url}</a>"
+            f"<b>Link:</b> <a href='{etsy_url}'>{etsy_url}</a>"
         )
         self.send_message(msg)
 

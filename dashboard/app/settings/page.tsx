@@ -42,7 +42,8 @@ export default function SettingsPage() {
             {(
               [
                 { key: 'anthropic', label: 'Anthropic (Claude AI)' },
-                { key: 'ebay', label: 'eBay Developer API' },
+                { key: 'etsy', label: 'Etsy API Key' },
+                { key: 'etsy_shop', label: 'Etsy Shop ID' },
                 { key: 'telegram', label: 'Telegram Bot' },
                 { key: 'supabase', label: 'Supabase Database' },
               ] as const
@@ -61,16 +62,10 @@ export default function SettingsPage() {
                 </div>
               )
             })}
-            <div className="flex items-center justify-between border-t border-gray-800 pt-3 mt-1">
-              <span className="text-gray-300 text-sm">eBay Mode</span>
-              <span className={`text-sm font-medium px-2 py-0.5 rounded-full ${health.ebay_sandbox === 'true' ? 'bg-yellow-900/60 text-yellow-300' : 'bg-green-900/60 text-green-300'}`}>
-                {health.ebay_sandbox === 'true' ? 'Sandbox' : 'Production'}
-              </span>
-            </div>
           </div>
         ) : (
           <div className="space-y-3">
-            {Array.from({ length: 4 }).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="h-6 bg-gray-800 rounded animate-pulse" />
             ))}
           </div>
@@ -141,11 +136,26 @@ export default function SettingsPage() {
         </div>
       </div>
 
+      {/* Etsy API info */}
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+        <h2 className="text-base font-semibold text-white mb-2">Etsy API</h2>
+        <p className="text-gray-400 text-sm mb-3">
+          Get your free API key from{' '}
+          <span className="text-indigo-400">developers.etsy.com</span>{' '}
+          and complete the OAuth flow to obtain an access token.
+        </p>
+        <div className="bg-gray-800 rounded-lg p-3 text-xs font-mono text-gray-300 space-y-1">
+          <div><span className="text-gray-500">ETSY_API_KEY</span>=your_api_key</div>
+          <div><span className="text-gray-500">ETSY_SHOP_ID</span>=your_shop_id</div>
+          <div><span className="text-gray-500">ETSY_ACCESS_TOKEN</span>=your_oauth_token</div>
+        </div>
+      </div>
+
       {/* Telegram info */}
       <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
         <h2 className="text-base font-semibold text-white mb-2">Telegram Approval</h2>
         <p className="text-gray-400 text-sm mb-3">
-          The system requires your approval via Telegram before listing any product on eBay.
+          The system requires your approval via Telegram before listing any product on Etsy.
           Configure your bot token and chat ID in the <code className="text-indigo-400">.env</code> file.
         </p>
         <div className="bg-gray-800 rounded-lg p-3 text-xs font-mono text-gray-300 space-y-1">

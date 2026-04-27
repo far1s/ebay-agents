@@ -44,8 +44,8 @@ export type Run = {
 export type Listing = {
   id: string
   run_id: string
-  ebay_listing_id: string
-  ebay_url: string
+  etsy_listing_id: string
+  etsy_url: string
   title: string
   price: number
   status: 'active' | 'sold' | 'ended' | 'error'
@@ -70,10 +70,11 @@ export type ScheduleSettings = {
 export type HealthCheck = {
   api: string
   anthropic: string
-  ebay: string
+  etsy: string
+  etsy_shop: string
   telegram: string
   supabase: string
-  ebay_sandbox: string
+  supabase_key: string
 }
 
 // ── API calls ─────────────────────────────────────────────────────────────────

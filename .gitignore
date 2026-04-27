@@ -21,3 +21,5 @@ dashboard/.env.local
 # Misc
 .DS_Store
 *.log
+
+.vercel

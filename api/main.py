@@ -85,11 +85,11 @@ async def health():
         "api": "ok",
         "python": sys.version,
         "anthropic": "ok" if os.getenv("ANTHROPIC_API_KEY") else "missing key",
-        "ebay": "ok" if os.getenv("EBAY_APP_ID") else "missing key",
+        "etsy": "ok" if os.getenv("ETSY_API_KEY") else "missing key",
+        "etsy_shop": "ok" if os.getenv("ETSY_SHOP_ID") else "missing key",
         "telegram": "ok" if os.getenv("TELEGRAM_BOT_TOKEN") else "missing key",
         "supabase": "ok" if os.getenv("SUPABASE_URL") else "missing key",
         "supabase_key": "ok" if os.getenv("SUPABASE_SERVICE_ROLE_KEY") else "missing key",
-        "ebay_sandbox": os.getenv("EBAY_SANDBOX_MODE", "true"),
         "import_errors": _import_errors if _import_errors else None,
     }
     return checks

@@ -1,4 +1,4 @@
--- EbayAgents Database Schema
+-- EtsyAgents Database Schema
 -- Run this in your Supabase SQL editor
 
 -- Enable UUID extension
@@ -79,18 +79,18 @@ create table if not exists approval_log (
 create index if not exists approval_log_run_id_idx on approval_log(run_id);
 create index if not exists approval_log_status_idx on approval_log(status);
 
--- ── eBay Listings ─────────────────────────────────────────────────────────────
+-- ── Etsy Listings ─────────────────────────────────────────────────────────────
 create table if not exists listings (
-  id               uuid primary key default uuid_generate_v4(),
-  run_id           text not null references agent_runs(run_id) on delete cascade,
-  product_id       uuid references generated_products(id),
-  ebay_listing_id  text unique,
-  ebay_url         text,
-  title            text not null,
-  price            numeric(10,2) not null,
-  status           text not null default 'active'
-                     check (status in ('active', 'sold', 'ended', 'error')),
-  listed_at        timestamptz not null default now()
+  id                uuid primary key default uuid_generate_v4(),
+  run_id            text not null references agent_runs(run_id) on delete cascade,
+  product_id        uuid references generated_products(id),
+  etsy_listing_id   text unique,
+  etsy_url          text,
+  title             text not null,
+  price             numeric(10,2) not null,
+  status            text not null default 'active'
+                      check (status in ('active', 'sold', 'ended', 'error')),
+  listed_at         timestamptz not null default now()
 );
 
 create index if not exists listings_status_idx on listings(status);

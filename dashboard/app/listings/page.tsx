@@ -33,7 +33,7 @@ export default function ListingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-white">Listings</h1>
-        <p className="text-gray-400 text-sm mt-1">All eBay listings created by the agents</p>
+        <p className="text-gray-400 text-sm mt-1">All Etsy listings created by the agents</p>
       </div>
 
       {/* Stats */}
@@ -67,7 +67,7 @@ export default function ListingsPage() {
           <div className="p-8 text-center text-gray-500">Loading...</div>
         ) : listings.length === 0 ? (
           <div className="p-8 text-center text-gray-500">
-            No listings yet. Run the pipeline to create your first eBay listing.
+            No listings yet. Run the pipeline to create your first Etsy listing.
           </div>
         ) : (
           <table className="w-full text-sm">
@@ -96,14 +96,14 @@ export default function ListingsPage() {
                     {format(new Date(listing.listed_at), 'MMM d, yyyy HH:mm')}
                   </td>
                   <td className="px-4 py-3">
-                    {listing.ebay_url ? (
+                    {listing.etsy_url ? (
                       <a
-                        href={listing.ebay_url}
+                        href={listing.etsy_url}
                         target="_blank"
                         rel="noreferrer"
                         className="text-indigo-400 hover:text-indigo-300 text-xs underline"
                       >
-                        View on eBay ↗
+                        View on Etsy ↗
                       </a>
                     ) : (
                       <span className="text-gray-600 text-xs">—</span>
