@@ -90,7 +90,8 @@ async def get_status():
         }
     except Exception as exc:
         import traceback
-        raise HTTPException(status_code=500, detail={"error": str(exc), "traceback": traceback.format_exc()})
+        from fastapi.responses import JSONResponse
+        return JSONResponse(status_code=200, content={"debug_error": str(exc), "debug_traceback": traceback.format_exc()})
 
 
 @router.get("/runs")
